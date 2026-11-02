@@ -1,5 +1,14 @@
 # Phase 1 validation — 2 November 2026
 
+## Hostinger deployment fix
+
+The supplied GitHub deployment log showed Turbopack failing to connect to its
+CSS helper process. Changed `npm run build` to use `next build --webpack`, as
+required by Hostinger for Next.js 16.3.3 and newer. The webpack production build
+passed locally, including TypeScript, static generation and build tracing, with
+no warnings. Hostinger redeployment remains to be verified after this change
+is pushed to GitHub. The original Turbopack results below are historical.
+
 ## Automated checks
 
 - `npm run lint`: passed, no errors or warnings.

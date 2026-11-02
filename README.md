@@ -28,6 +28,13 @@ npm run build
 npm start
 ```
 
+Production builds use `next build --webpack` for Hostinger compatibility.
+Hostinger currently requires webpack for Next.js 16.3.3 and newer; its build
+environment can fail when Turbopack starts its CSS helper process. Keep the
+Hostinger build command as `npm run build`, output directory `.next`, framework
+Next.js, and Node.js 22.x. See the
+[Hostinger troubleshooting guide](https://www.hostinger.com/support/how-to-fix-next-js-16-turbopack-build-errors-on-hostinger/).
+
 The initial build requires access to Google Fonts for `next/font/google` to fetch
 Newsreader and Plus Jakarta Sans. Next.js serves the optimized fonts locally;
 visitors do not fetch fonts from Google. Source font files are not distributed
