@@ -89,9 +89,9 @@ export default async function HomePage() {
             Set in Trinidad, <em>Bois</em> brings August and Kwame into a
             contemporary story shaped by Caribbean folklore.
           </p>
-          <p className="small-note">
-            An approved synopsis and excerpt will be shared here when available.
-          </p>
+          <Button href="/books/bois" variant="text">
+            Read the full synopsis <Arrow />
+          </Button>
         </div>
       </EditorialSection>
       <section

@@ -35,18 +35,17 @@ export function BookFeature() {
           <p className="eyebrow lavender">Caribbean young adult fantasy</p>
           <h1 id="book-title">BOIS</h1>
           <p className="book-lead">
-            Contemporary Trinidad.
-            <br />
-            <em>A world shaped by folklore.</em>
+            <em>Some legends are better left undisturbed.</em>
           </p>
           <p className="synopsis">
-            <em>Bois</em> is a contemporary Caribbean YA fantasy involving
-            August, his brother Kwame, and supernatural elements inspired by
-            Trinidad and Tobago folklore.
+            Sixteen-year-old August never imagined that the creatures of
+            Trinidadian folklore were real. But when his brother Kwame becomes
+            entangled in a terrifying supernatural world, August discovers that
+            the stories whispered across the island are more than just old
+            superstitions.
           </p>
           <p className="muted">
-            The debut novel by David Hamilton. Further story and publication
-            details will be shared here.
+            The debut novel by David Hamilton.
           </p>
           <div className="book-note">
             <span className="eyebrow">The story begins here</span>
