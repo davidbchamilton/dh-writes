@@ -57,9 +57,22 @@ export default async function HomePage() {
           <p className="eyebrow lavender">The author</p>
           <h2 id="about-heading">David Hamilton</h2>
           <p>
-            David Hamilton is the author of <em>Bois</em>, his debut novel: a
-            contemporary Caribbean young adult fantasy inspired by Trinidad and
-            Tobago folklore.
+            David Hamilton is an award-winning Trinidadian writer whose passion
+            for storytelling began in primary school, inspired by his love of{" "}
+            <em>The Hardy Boys</em> novels. His creative journey has spanned
+            theatre, music journalism, and hip-hop, releasing music under the
+            moniker <em>Da Face</em>.
+          </p>
+          <p className="mt-4">
+            In 2022, he won the Caribbean Magazine Plus Short Story Competition
+            with his story <em>Kyle</em> and was a finalist in the Island Voices
+            Short Story Competition, with his work published in the{" "}
+            <em>Island Voices</em> anthology.
+          </p>
+          <p className="mt-4">
+            Drawing inspiration from Caribbean culture and folklore, David is
+            preparing to independently publish his debut novel, <em>Bois</em>,
+            a young adult fantasy set in contemporary Trinidad, in 2027.
           </p>
           <Button href="/about" variant="text">
             About David <Arrow />
