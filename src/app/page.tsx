@@ -57,8 +57,8 @@ export default async function HomePage() {
           <p className="eyebrow lavender">The author</p>
           <h2 id="about-heading">David Hamilton</h2>
           <p>
-            David Hamilton is an award-winning Trinidadian writer whose passion
-            for storytelling began in primary school, inspired by his love of{" "}
+            David Hamilton is a Trinidadian writer whose passion for storytelling
+            began in primary school, inspired by his love of{" "}
             <em>The Hardy Boys</em> novels. His creative journey has spanned
             theatre, music journalism, and hip-hop, releasing music under the
             moniker <em>Da Face</em>.
