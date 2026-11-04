@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { navigation } from "@/lib/site";
 import { SiteNavigation } from "./site-navigation";
+import { SocialLinks } from "./social-links";
 import { Button, Arrow } from "./ui";
 
 export function Wordmark() {
@@ -37,6 +38,7 @@ export function SiteFooter() {
               The author of <em>Bois</em>, a contemporary Caribbean young adult
               fantasy.
             </p>
+            <SocialLinks />
           </div>
           <div>
             <p className="eyebrow">Index</p>

@@ -1,16 +1,20 @@
-import { PlaceholderPage } from "@/components/placeholder-page";
+import { SocialLinks } from "@/components/social-links";
+import { Breadcrumbs, PageHero } from "@/components/ui";
 import { pageMetadata } from "@/lib/site";
 export const metadata = pageMetadata(
   "Contact",
   "/contact",
-  "Contact information for author David Hamilton.",
+  "Find author David Hamilton on Instagram, TikTok, and Facebook.",
   true,
 );
 export default function ContactPage() {
   return (
-    <PlaceholderPage
-      title="Contact"
-      description="Confirmed contact details for reader, press, bookseller, and event enquiries will be added here."
-    />
+    <div className="site-container placeholder-page">
+      <Breadcrumbs items={[{ label: "Home", href: "/" }, { label: "Contact" }]} />
+      <PageHero eyebrow="David Hamilton" title="Contact">
+        <p>Connect with me on social media.</p>
+      </PageHero>
+      <SocialLinks />
+    </div>
   );
 }
