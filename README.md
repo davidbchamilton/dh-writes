@@ -58,6 +58,46 @@ Without a configured public origin, the generated social image uses a local
 `http://localhost:3000` metadata base for preview only. This is not a production
 domain or a canonical URL. Set the real origin before launch.
 
+## Google Analytics
+
+GA4 property `G-0JBYL3J2YD` is configured in `src/lib/analytics.ts` and loaded
+once by the root layout. It runs only on `davidhamiltonwrites.com` and
+`www.davidhamiltonwrites.com`; localhost and preview hosts send no events.
+No additional hosting environment variable is needed. Deploy a fresh build
+to activate the integration on the live website.
+
+The integration uses Google's automatic page views. In the GA4 web data stream,
+keep Enhanced Measurement > Page views > Page changes based on browser history
+events enabled so Next.js client navigation is counted. Do not add a second
+Google tag or manual page-view tracker.
+
+| Event | Meaning |
+| --- | --- |
+| `page_view` | Initial page load and client navigation (Enhanced Measurement). |
+| `substack_subscribe_click` | Click on the external Substack subscribe link; not a confirmed subscription. |
+| `contact_click` | Contact-page, social-profile, email, or telephone link click. `contact_method` distinguishes them. |
+| `book_link_click` | Book-page or retailer link click. `link_type` distinguishes `book_page` and `retailer`; the Island Voices retailer link also sends `book_title`. |
+
+The current checkout contains no contact form, so no submission event is sent.
+When a real form is added, send the recommended `generate_lead` event only after
+the server confirms successful submission. Never include form field values.
+For future external book links, add `data-analytics="book"` and optionally
+`data-book-title="Approved title"`. Substack custom domains must retain
+`data-analytics="substack"`. Custom click parameters omit queries, fragments,
+email addresses, phone numbers, and link text. Standard Google Analytics page
+measurement still collects page URLs; do not put personal information in URLs.
+
+After deployment, use Google Tag Assistant and GA4 Realtime to verify the tag,
+navigate between pages, and click each action once. Confirm one page view per
+navigation and the corresponding custom event. Optionally mark
+`substack_subscribe_click` as a key event, recognizing that it measures clicks.
+For breakdowns in reports, register event-scoped custom dimensions for
+`contact_method`, `link_type`, and `book_title` in GA4. Property settings and live
+event delivery cannot be verified from this source checkout alone.
+
+References: [Google tag installation](https://developers.google.com/tag-platform/gtagjs),
+[page-view measurement](https://developers.google.com/analytics/devguides/collection/ga4/views).
+
 ## Architecture
 
 ```text

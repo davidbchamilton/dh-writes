@@ -17,7 +17,7 @@ export function NewsletterCTA({ direct = false }: { direct?: boolean }) {
       <div className="newsletter-action">
         {direct ? (
           substackUrl ? (
-            <a className="button button--primary" href={substackUrl.href}>
+            <a className="button button--primary" href={substackUrl.href} data-analytics="substack">
               Subscribe on Substack <Arrow diagonal />
             </a>
           ) : (

@@ -27,6 +27,8 @@ export default function BooksPage() {
           <a
             className="button button--text mt-4"
             href="https://www.amazon.com/dp/B0CLKZ34WP"
+            data-analytics="book"
+            data-book-title="Island Voices"
           >
             View on Amazon <Arrow diagonal />
           </a>

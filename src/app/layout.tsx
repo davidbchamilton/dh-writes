@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Newsreader, Plus_Jakarta_Sans } from "next/font/google";
 import { SiteFooter, SiteHeader } from "@/components/site-shell";
+import { GoogleAnalytics } from "@/components/google-analytics";
 import { site, siteUrl } from "@/lib/site";
 import "./globals.css";
 
@@ -47,6 +48,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${newsreader.variable} ${jakarta.variable}`}>
       <body>
+        <GoogleAnalytics />
         <a href="#main-content" className="skip-link">
           Skip to content
         </a>

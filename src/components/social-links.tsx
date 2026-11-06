@@ -12,7 +12,7 @@ export function SocialLinks() {
     <ul className="flex flex-wrap gap-x-5" aria-label="David Hamilton on social media">
       {profiles.map(({ label, href }) => (
         <li key={label}>
-          <a className="inline-flex min-h-11 items-center" href={href}>
+          <a className="inline-flex min-h-11 items-center" href={href} data-analytics="contact">
             {label}
           </a>
         </li>
