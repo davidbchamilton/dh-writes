@@ -22,8 +22,10 @@ export function BookFeature() {
             <Image
               src={boisArt}
               alt="Original Bois illustration: a young person carrying a wooden staff past hillside homes and dense foliage, with windows glowing in the dark."
-              sizes="(max-width: 767px) calc(100vw - 40px), (max-width: 1023px) 40vw, 450px"
-              priority
+              sizes="(max-width: 469px) calc(100vw - 58px), (max-width: 767px) 412px, (max-width: 900px) calc(40vw - 69.2px), (max-width: 1100px) calc(41.667vw - 74.667px), (max-width: 1199px) calc(41.667vw - 84.667px), (max-width: 1439px) 415.333px, 412px"
+              loading="eager"
+              fetchPriority="high"
+              quality={65}
               placeholder="blur"
             />
           </div>
