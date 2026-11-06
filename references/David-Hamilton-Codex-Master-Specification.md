@@ -6,7 +6,7 @@ You are a senior Next.js engineer and design-system implementer. Build a product
 
 The source repository or working directory will contain:
 - A Stitch export ZIP named `stitch_david_hamilton_author_website.zip` with `code.html`, `screen.png`, and `DESIGN.md`.
-- The author's illustration `Bois Cover Art Final.jpg`.
+- The author's illustration `Bois Cover Art Final.webp` (converted losslessly from the original JPEG).
 - `david-hamilton-design-system-v1.md`, the complete design tokens, global components, page-by-page blueprints, correction list, and acceptance criteria.
 
 **Read all these inputs first.** Treat the attached design system as the implementation specification, `screen.png` as visual reference, `DESIGN.md` as token/visual intent reference, and `code.html` as a non-production HTML reference. If an asset is missing, report it and use clearly identified local placeholder treatment rather than fabricating anything.

@@ -1,8 +1,14 @@
-import Image from "next/image";
-import boisArt from "../../public/images/bois-artwork.jpg";
+import { preload } from "react-dom";
+import { heroImage } from "@/lib/hero-image";
 import { Arrow, Button, MetaRow, TagChip } from "./ui";
 
 export function BookFeature() {
+  preload(heroImage.src, {
+    as: "image",
+    imageSrcSet: heroImage.srcSet,
+    imageSizes: heroImage.sizes,
+    fetchPriority: "high",
+  });
   return (
     <section
       className="site-container book-spotlight"
@@ -19,14 +25,14 @@ export function BookFeature() {
       <div className="book-grid">
         <figure className="book-art">
           <div className="art-frame">
-            <Image
-              src={boisArt}
+            {/* Pre-encoded responsive WebP avoids runtime optimization and image hydration. */}
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              {...heroImage}
               alt="Original Bois illustration: a young person carrying a wooden staff past hillside homes and dense foliage, with windows glowing in the dark."
-              sizes="(max-width: 469px) calc(100vw - 58px), (max-width: 767px) 412px, (max-width: 900px) calc(40vw - 69.2px), (max-width: 1100px) calc(41.667vw - 74.667px), (max-width: 1199px) calc(41.667vw - 84.667px), (max-width: 1439px) 415.333px, 412px"
               loading="eager"
               fetchPriority="high"
-              quality={65}
-              placeholder="blur"
+              decoding="async"
             />
           </div>
           <figcaption>

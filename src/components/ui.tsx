@@ -12,7 +12,7 @@ export function Button({
   ...props
 }: ButtonProps) {
   return (
-    <Link className={`button button--${variant} ${className}`} {...props}>
+    <Link prefetch={false} className={`button button--${variant} ${className}`} {...props}>
       {children}
     </Link>
   );

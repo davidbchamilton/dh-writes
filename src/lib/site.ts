@@ -7,6 +7,13 @@ export const site = {
     "The author website of David Hamilton. Discover Bois, a contemporary Caribbean young adult fantasy inspired by Trinidad and Tobago folklore.",
 };
 
+export const socialImage = {
+  url: "/opengraph-image.webp",
+  width: 1200,
+  height: 630,
+  alt: "David Hamilton — Author & Novelist. Discover Bois, a Caribbean young adult fantasy.",
+};
+
 export function parsePublicUrl(
   value: string | undefined,
   name: string,
@@ -55,6 +62,7 @@ export function pageMetadata(
       title: `${title} | ${site.name}`,
       description,
       url: canonical,
+      images: [socialImage],
     },
   };
 }

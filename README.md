@@ -128,12 +128,22 @@ Shared components include `SiteHeader`, `SiteNavigation`, `SiteFooter`, `Button`
 `QuotePanel` is available but unused because no approved quotation was supplied.
 The author panel uses a typographic monogram rather than an invented portrait.
 
+### Image format rule
+
+All website images and reference masters must use `.webp`, including the favicon
+and social sharing image. See [AGENTS.md](AGENTS.md) for the maintained rule.
+The lossless artwork master is `references/bois-artwork-master.webp`.
+Run `npm run images:generate` to rebuild responsive hero images and
+`npm run images:social` to regenerate the social sharing image. Generated images
+belong in source control, so production builds do not need to run these commands.
+
 All pages are server components except the small navigation component, which
 handles active links and the mobile disclosure. The menu supports keyboard
 navigation, Escape with focus return, outside-click dismissal, and closing
 after navigation. Shared CSS provides focus indicators, reduced-motion support,
-and a skip link. The portrait artwork uses a static `next/image` import with
-intrinsic dimensions, responsive sizes, blur placeholder and priority loading.
+and a skip link. The portrait artwork uses pre-encoded responsive WebP assets,
+content-hashed static imports, intrinsic dimensions, and a high-priority preload.
+It does not require a runtime image optimizer or client image component.
 
 ## Phase 1 routes
 
@@ -142,7 +152,8 @@ intrinsic dimensions, responsive sizes, blur placeholder and priority loading.
   `/privacy`: intentionally minimal shared-layout placeholders.
 - `/journal/[slug]`: route foundation only. Drafts and unknown slugs return 404;
   there are no public articles. The full article layout is reserved for Phase 2.
-- `/robots.txt`, `/sitemap.xml`, `/opengraph-image`: generated SEO endpoints.
+- `/robots.txt`, `/sitemap.xml`: generated SEO endpoints; `/opengraph-image.webp`:
+  pre-generated social sharing image.
 
 The Stitch reference's invented awards, reviews, author photo, biography,
 publisher, agent, prices, release dates, retail actions, audio and excerpt have
@@ -166,7 +177,7 @@ description: "Author-approved description"
 publishedAt: "2026-11-02" # quote dates; use the actual publication date
 category: "Writing"
 draft: true
-# coverImage: "/images/approved-image.jpg" # optional
+# coverImage: "/images/approved-image.webp" # optional
 # canonical: "https://..."                # optional confirmed canonical URL
 ```
 

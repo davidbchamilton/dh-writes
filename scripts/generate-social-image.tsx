@@ -1,11 +1,10 @@
 import { ImageResponse } from "next/og";
+import sharp from "sharp";
+import { fileURLToPath } from "node:url";
 
-export const alt =
-  "David Hamilton — Author & Novelist. Discover Bois, a Caribbean young adult fantasy.";
-export const size = { width: 1200, height: 630 };
-export const contentType = "image/png";
+const size = { width: 1200, height: 630 };
 
-export default function OpenGraphImage() {
+function openGraphImage() {
   return new ImageResponse(
     <div
       style={{
@@ -38,3 +37,9 @@ export default function OpenGraphImage() {
     size,
   );
 }
+
+const response = openGraphImage();
+await sharp(Buffer.from(await response.arrayBuffer()))
+  .webp({ quality: 90, effort: 6 })
+  .toFile(fileURLToPath(new URL("../public/opengraph-image.webp", import.meta.url)));
+console.log("Generated the WebP social sharing image.");

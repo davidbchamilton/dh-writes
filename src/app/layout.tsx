@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Newsreader, Plus_Jakarta_Sans } from "next/font/google";
 import { SiteFooter, SiteHeader } from "@/components/site-shell";
 import { GoogleAnalytics } from "@/components/google-analytics";
-import { site, siteUrl } from "@/lib/site";
+import { site, siteUrl, socialImage } from "@/lib/site";
 import "./globals.css";
 
 const newsreader = Newsreader({
@@ -24,18 +24,20 @@ export const metadata: Metadata = {
   title: { default: site.title, template: `%s | ${site.name}` },
   description: site.description,
   applicationName: site.title,
-  icons: { icon: "/icon.svg" },
+  icons: { icon: "/icon.webp" },
   openGraph: {
     type: "website",
     locale: "en_TT",
     siteName: site.title,
     title: site.title,
     description: site.description,
+    images: [socialImage],
   },
   twitter: {
     card: "summary",
     title: site.title,
     description: site.description,
+    images: [socialImage],
   },
   robots: siteUrl
     ? { index: true, follow: true }

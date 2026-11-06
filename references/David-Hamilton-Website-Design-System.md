@@ -5,7 +5,7 @@
 
 **Reference assets supplied:**
 - `stitch_david_hamilton_author_website.zip`: `code.html`, `screen.png`, `DESIGN.md` (one homepage mockup)
-- `Bois Cover Art Final.jpg`: original illustration for *Bois*, 1365 × 2048 pixels
+- `Bois Cover Art Final.webp`: lossless WebP conversion of the original illustration for *Bois*, 2400 × 3600 pixels
 
 **Design source of truth:** Preserve the visual intent of Stitch's **Nocturne Verdant** design. Reuse its style language across pages; do not carry its invented copy into production.
 

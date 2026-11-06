@@ -50,6 +50,7 @@ export function SiteNavigation() {
           <Link
             key={href}
             href={href}
+            prefetch={false}
             aria-current={
               (href === "/" ? pathname === href : pathname.startsWith(href))
                 ? "page"
@@ -63,6 +64,7 @@ export function SiteNavigation() {
         <Link
           className="mobile-updates"
           href="/newsletter"
+          prefetch={false}
           onClick={() => setOpen(false)}
         >
           Get Book Updates <span aria-hidden="true">→</span>

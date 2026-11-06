@@ -6,7 +6,7 @@ import { Button, Arrow } from "./ui";
 
 export function Wordmark() {
   return (
-    <Link href="/" className="wordmark" aria-label="David Hamilton — Home">
+    <Link href="/" prefetch={false} className="wordmark" aria-label="David Hamilton — Home">
       <span>David Hamilton</span>
       <small>Author &amp; Novelist</small>
     </Link>
@@ -46,7 +46,7 @@ export function SiteFooter() {
               <ul>
                 {navigation.map(({ href, label }) => (
                   <li key={href}>
-                    <Link href={href}>{label}</Link>
+                    <Link href={href} prefetch={false}>{label}</Link>
                   </li>
                 ))}
               </ul>
@@ -64,7 +64,7 @@ export function SiteFooter() {
         </div>
         <div className="footer-bottom">
           <p>© {new Date().getFullYear()} David Hamilton.</p>
-          <Link href="/privacy">Privacy</Link>
+          <Link href="/privacy" prefetch={false}>Privacy</Link>
         </div>
       </div>
     </footer>
