@@ -14,6 +14,10 @@ export const socialImage = {
   alt: "David Hamilton — Author & Novelist. Discover Bois, a Caribbean young adult fantasy.",
 };
 
+// Only completed pages belong in the sitemap. Empty journal and other
+// preparation pages retain their explicit noindex metadata until published.
+export const indexablePaths = ["/", "/newsletter", "/privacy"] as const;
+
 export function parsePublicUrl(
   value: string | undefined,
   name: string,
@@ -56,8 +60,7 @@ export function pageMetadata(
     title,
     description,
     alternates: canonical ? { canonical } : undefined,
-    robots:
-      placeholder || !siteUrl ? { index: false, follow: true } : undefined,
+    robots: { index: !placeholder && Boolean(siteUrl), follow: true },
     openGraph: {
       title: `${title} | ${site.name}`,
       description,

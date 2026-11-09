@@ -58,9 +58,11 @@ the embed on newsletter-page visits, with a direct hosted-form fallback.
 
 Set these before building; rebuild after changing them. Never put secrets in
 `NEXT_PUBLIC_*` variables. All Phase 1 placeholder pages remain `noindex` and
-outside the sitemap even after an origin is configured. Only the complete
-homepage appears in the configured sitemap. Review the privacy policy and
-remaining content before a public launch.
+outside the sitemap even after an origin is configured. Completed pages
+(`/`, `/newsletter`, and `/privacy`) allow indexing and appear in the configured
+sitemap. The empty journal remains excluded until articles are published.
+Without `NEXT_PUBLIC_SITE_URL`, every page remains `noindex` and the sitemap
+stays empty. Rebuild after changing the production origin or indexing settings.
 
 Without a configured public origin, the generated social image uses a local
 `http://localhost:3000` metadata base for preview only. This is not a production
@@ -158,8 +160,9 @@ It does not require a runtime image optimizer or client image component.
 
 - `/`: fully implemented homepage.
 - `/newsletter`: live embedded Kit signup, with a direct hosted-form fallback.
-- `/books`, `/books/bois`, `/about`, `/journal`, `/contact`,
-  `/privacy`: intentionally minimal shared-layout placeholders.
+- `/privacy`: privacy information, eligible for indexing with a configured origin.
+- `/books`, `/books/bois`, `/about`, `/journal`, `/contact`: retain their existing
+  preparation-stage indexing restrictions.
 - `/journal/[slug]`: route foundation only. Drafts and unknown slugs return 404;
   there are no public articles. The full article layout is reserved for Phase 2.
 - `/robots.txt`, `/sitemap.xml`: generated SEO endpoints; `/opengraph-image.webp`:

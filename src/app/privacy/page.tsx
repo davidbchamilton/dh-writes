@@ -4,7 +4,6 @@ export const metadata = pageMetadata(
   "Privacy",
   "/privacy",
   "Privacy information for the David Hamilton author website.",
-  true,
 );
 export default function PrivacyPage() {
   return (

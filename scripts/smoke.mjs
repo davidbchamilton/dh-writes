@@ -11,11 +11,16 @@ const routes = [
   "/contact",
   "/privacy",
 ];
+let publicOrigin;
 
 for (const route of routes) {
   const response = await fetch(new URL(route, origin));
   assert.equal(response.status, 200, `${route} must load`);
   const html = await response.text();
+  if (route === "/") {
+    const canonical = html.match(/<link rel="canonical" href="([^"]+)"/);
+    if (canonical) publicOrigin = new URL(canonical[1]).origin;
+  }
   assert.match(
     html,
     /<title>[^<]*David Hamilton/,
@@ -54,12 +59,20 @@ for (const route of routes) {
       assert.match(image.headers.get("cache-control"), /immutable/);
     }
   }
-  if (route !== "/")
+  if (["/", "/newsletter", "/privacy"].includes(route) && publicOrigin) {
+    assert.doesNotMatch(response.headers.get("x-robots-tag") ?? "", /noindex/i);
+    assert.match(html, /name="robots" content="index, follow"/);
+    assert.doesNotMatch(html, /content="[^"]*noindex/);
+    const canonical = html.match(/<link rel="canonical" href="([^"]+)"/);
+    assert.ok(canonical, `${route} needs its canonical URL`);
+    assert.equal(new URL(canonical[1]).href, new URL(route, publicOrigin).href);
+  } else if (route !== "/" || !publicOrigin) {
     assert.match(
       html,
       /name="robots" content="noindex, follow"/,
-      `${route} must stay noindex during Phase 1`,
+      `${route} must stay noindex while incomplete or unconfigured`,
     );
+  }
   console.log(`PASS ${route}`);
 }
 
@@ -81,8 +94,15 @@ assert.equal(sitemap.status, 200);
 const sitemapXml = await sitemap.text();
 assert.doesNotMatch(
   sitemapXml,
-  /internal-example|\/about|\/books|\/journal|\/contact|\/newsletter|\/privacy/,
+  /internal-example|\/about|\/books|\/journal|\/contact/,
 );
+if (publicOrigin) {
+  for (const path of ["/", "/newsletter", "/privacy"]) {
+    assert.ok(sitemapXml.includes(`<loc>${new URL(path, publicOrigin).href}</loc>`));
+  }
+} else {
+  assert.doesNotMatch(sitemapXml, /<loc>/);
+}
 assert.equal((await fetch(new URL("/robots.txt", origin))).status, 200);
 const og = await fetch(new URL("/opengraph-image.webp", origin));
 assert.equal(og.status, 200);

@@ -1,9 +1,13 @@
 import type { MetadataRoute } from "next";
-import { siteUrl } from "@/lib/site";
+import { indexablePaths, siteUrl } from "@/lib/site";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  // Only the homepage is complete in Phase 1. Never invent a production origin.
+  // Include completed public pages, without inventing a production origin.
   return siteUrl
-    ? [{ url: siteUrl.href, changeFrequency: "monthly", priority: 1 }]
+    ? indexablePaths.map((path) => ({
+        url: new URL(path, siteUrl).href,
+        changeFrequency: "monthly" as const,
+        priority: path === "/" ? 1 : 0.5,
+      }))
     : [];
 }

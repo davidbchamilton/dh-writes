@@ -19,3 +19,6 @@
 - Validate with `npm test`, `npm run typecheck`, `npm run build`, and the
   production smoke checks. Report measured savings separately from Lighthouse
   scores; do not claim that a collapsed audit is fixed without a fresh trace.
+- When a page is ready for search, remove its placeholder metadata flag and add
+  its path to `indexablePaths` in `src/lib/site.ts`. Keep empty/draft pages excluded.
+  Verify both configured-production and unconfigured-preview indexing behavior.

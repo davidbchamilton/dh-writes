@@ -5,7 +5,6 @@ export const metadata = pageMetadata(
   "Newsletter",
   "/newsletter",
   "Book news and updates from David Hamilton.",
-  true,
 );
 export default function NewsletterPage() {
   return (

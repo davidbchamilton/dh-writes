@@ -95,3 +95,23 @@ rendering, and correct cleanup when navigating home and back. The hosted form
 fallback returned HTTP 200. Mobile capture: `artifacts/kit-signup-mobile.webp`.
 No email address was submitted; confirmation delivery remains unverified.
 Changes are local and have not been deployed.
+
+## Search indexing correction - November 9, 2026
+
+Live checks confirmed `noindex, follow` on `/journal`, `/newsletter`, and
+`/privacy`. All returned HTTP 200; robots.txt allowed crawling, and the sitemap
+contained only the homepage. No X-Robots-Tag header was present.
+
+Newsletter and privacy now emit explicit `index, follow` when the public origin
+is configured and are included in the sitemap. The empty journal retains
+noindex until published content is ready. Unconfigured previews remain noindex
+with an empty sitemap.
+
+All 18 tests passed both with no configured origin and with
+`NEXT_PUBLIC_SITE_URL=https://davidhamiltonwrites.com`. The production build,
+standalone type check, and production smoke checks passed, including canonical
+URLs, rendered robots metadata, absence of noindex response headers on completed
+pages, sitemap membership, and continued exclusion of drafts/preparation pages.
+Changes are local; deployment and Google recrawling remain outstanding. After
+deployment, use Search Console URL Inspection to test the live newsletter and
+privacy URLs and request indexing. The journal exclusion remains intentional.
