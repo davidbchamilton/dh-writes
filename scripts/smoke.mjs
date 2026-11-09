@@ -24,6 +24,13 @@ for (const route of routes) {
   assert.match(html, /id="main-content"/, `${route} needs a main landmark`);
   assert.match(html, /property="og:image" content="[^"]*\/opengraph-image\.webp"/);
   assert.doesNotMatch(html, /href="#"/, `${route} must not contain fake links`);
+  if (route === "/newsletter") {
+    assert.match(html, /data-kit-embed="1f64be7eb2"/);
+    assert.match(html, /https:\/\/david-hamilton-2\.kit\.com\/1f64be7eb2/);
+    assert.doesNotMatch(html, /Subscriptions will open|Coming in a subsequent phase/);
+  } else {
+    assert.doesNotMatch(html, /data-kit-embed=/, "Kit embed must be isolated to the newsletter page");
+  }
   assert.doesNotMatch(
     html,
     /<form[\s>]/,

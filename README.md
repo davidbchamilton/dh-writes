@@ -46,7 +46,15 @@ failure, remove only this project's generated `.next` directory and retry.
 | Variable                   | Behavior                                                                                                                                                                                                    |
 | -------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `NEXT_PUBLIC_SITE_URL`     | Real public site origin, including `https://`. No default production domain. When unset, pages are `noindex`, robots disallows crawling, canonical URLs are omitted, and the sitemap is empty.              |
-| `NEXT_PUBLIC_SUBSTACK_URL` | Confirmed HTTPS publication URL, including any custom publication domain. When unset, `/newsletter` explains that subscriptions are not yet available. When set, it displays a real external Substack link. |
+| `NEXT_PUBLIC_SUBSTACK_URL` | Optional confirmed HTTPS Substack publication URL. Displays a secondary reading link when configured; Kit remains the primary signup. |
+
+The primary newsletter signup is the live Kit form `1f64be7eb2`, embedded only
+on `/newsletter`. All main Get Book Updates buttons lead there. The existing
+`NEXT_PUBLIC_SUBSTACK_URL`, when configured, appears as a quieter secondary
+Read David on Substack link. It is no longer required for subscriptions.
+The form's wording, fields, confirmation message, and subscriber delivery remain
+managed in Kit; changes there flow through the JavaScript embed. The site loads
+the embed on newsletter-page visits, with a direct hosted-form fallback.
 
 Set these before building; rebuild after changing them. Never put secrets in
 `NEXT_PUBLIC_*` variables. All Phase 1 placeholder pages remain `noindex` and
@@ -75,6 +83,7 @@ Google tag or manual page-view tracker.
 | --- | --- |
 | `page_view` | Initial page load and client navigation (Enhanced Measurement). |
 | `substack_subscribe_click` | Click on the external Substack subscribe link; not a confirmed subscription. |
+| `newsletter_signup_click` | Click through to the Kit signup page or hosted form; not a confirmed subscription. |
 | `contact_click` | Contact-page, social-profile, email, or telephone link click. `contact_method` distinguishes them. |
 | `book_link_click` | Book-page or retailer link click. `link_type` distinguishes `book_page` and `retailer`; the Island Voices retailer link also sends `book_title`. |
 
@@ -148,7 +157,8 @@ It does not require a runtime image optimizer or client image component.
 ## Phase 1 routes
 
 - `/`: fully implemented homepage.
-- `/books`, `/books/bois`, `/about`, `/journal`, `/newsletter`, `/contact`,
+- `/newsletter`: live embedded Kit signup, with a direct hosted-form fallback.
+- `/books`, `/books/bois`, `/about`, `/journal`, `/contact`,
   `/privacy`: intentionally minimal shared-layout placeholders.
 - `/journal/[slug]`: route foundation only. Drafts and unknown slugs return 404;
   there are no public articles. The full article layout is reserved for Phase 2.
@@ -158,8 +168,8 @@ It does not require a runtime image optimizer or client image component.
 The Stitch reference's invented awards, reviews, author photo, biography,
 publisher, agent, prices, release dates, retail actions, audio and excerpt have
 been omitted. The excerpt band uses a short factual thematic note. Journal
-previews use an honest empty state until approved entries exist. No contact or
-subscription form claims to submit data.
+previews use an honest empty state until approved entries exist. There is no
+contact form. Newsletter subscriptions use the live Kit form.
 
 ## MDX preparation
 

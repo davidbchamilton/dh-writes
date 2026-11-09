@@ -5,7 +5,7 @@ export function isAnalyticsHost(hostname: string) {
 }
 
 type LinkEvent = {
-  name: "substack_subscribe_click" | "contact_click" | "book_link_click";
+  name: "newsletter_signup_click" | "substack_subscribe_click" | "contact_click" | "book_link_click";
   params: Record<string, string>;
 };
 
@@ -27,6 +27,13 @@ export function analyticsLinkEvent(
     return { name: "contact_click", params: { contact_method: url.protocol.slice(0, -1) } };
   }
   if (!["https:", "http:"].includes(url.protocol)) return;
+
+  if (category === "kit" || (url.origin === page.origin && /^\/newsletter\/?$/.test(url.pathname))) {
+    return {
+      name: "newsletter_signup_click",
+      params: { destination: "kit", link_type: url.origin === page.origin ? "newsletter_page" : "hosted_form" },
+    };
+  }
 
   if (category === "substack" || url.hostname === "substack.com" || url.hostname.endsWith(".substack.com")) {
     return { name: "substack_subscribe_click", params: { destination: url.hostname } };

@@ -554,6 +554,49 @@
   .newsletter-action {
     justify-self: end;
   }
+  .newsletter-signup {
+    max-width: 880px;
+    margin-inline: auto;
+  }
+  .kit-signup {
+    width: 100%;
+    min-width: 0;
+  }
+  .kit-embed {
+    min-height: 540px;
+  }
+  .kit-embed .formkit-form {
+    margin-inline: auto;
+    width: 100%;
+  }
+  .kit-signup--error .kit-embed {
+    min-height: 0;
+  }
+  .kit-embed .formkit-input {
+    color: var(--text) !important;
+  }
+  .kit-embed .formkit-input::placeholder {
+    color: var(--text-muted);
+    opacity: 1;
+  }
+  .kit-embed .formkit-submit {
+    color: var(--ink) !important;
+  }
+  .kit-embed input:focus-visible {
+    outline: 2px solid var(--amber-light);
+    outline-offset: 3px;
+  }
+  .kit-fallback {
+    margin-top: 16px;
+  }
+  .kit-fallback a,
+  .newsletter-secondary a {
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+  .newsletter-secondary {
+    margin-top: 16px;
+  }
   .newsletter-action > .small-note {
     font-size: 11px !important;
     margin-top: 14px;
@@ -748,6 +791,9 @@
   }
 }
 @media (max-width: 900px) {
+  .kit-embed {
+    min-height: 680px;
+  }
   /* Keep scrolling paint inexpensive on mobile; retain the opaque header. */
   .site-header {
     background: var(--background);

@@ -79,3 +79,19 @@ from the reference's fake reviews, portrait, excerpt and article cards.
 
 The repository is initialized with Git; files remain uncommitted for review.
 No deployment or remote repository was created.
+
+## Kit signup integration - November 9, 2026
+
+The primary Get Book Updates actions now lead to the live Kit embed on
+`/newsletter`. Substack is a secondary text link when its existing environment
+variable is configured. The homepage does not mount or download the Kit form.
+Privacy copy and signup-interest analytics have been updated; no subscription
+success event is inferred from a click.
+
+Production build, standalone type check, all 16 tests, and all route smoke checks
+passed. Browser checks confirmed one live Kit form, a required email field,
+correct Kit submission destination, no mobile overflow at 390px, desktop
+rendering, and correct cleanup when navigating home and back. The hosted form
+fallback returned HTTP 200. Mobile capture: `artifacts/kit-signup-mobile.webp`.
+No email address was submitted; confirmation delivery remains unverified.
+Changes are local and have not been deployed.

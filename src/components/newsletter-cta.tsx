@@ -1,36 +1,44 @@
 import { substackUrl } from "@/lib/site";
 import { Arrow, Button } from "./ui";
+import { KitSignup } from "./kit-signup";
 
 export function NewsletterCTA({ direct = false }: { direct?: boolean }) {
+  if (direct) {
+    return (
+      <section className="newsletter-signup" aria-label="Book updates signup">
+        <KitSignup />
+        <p className="small-note">Book updates via Kit. Unsubscribe at any time.</p>
+        {substackUrl && (
+          <p className="small-note newsletter-secondary">
+            <a href={substackUrl.href} data-analytics="substack">Read David on Substack <Arrow diagonal /></a>
+          </p>
+        )}
+      </section>
+    );
+  }
   return (
     <section className="newsletter-panel" aria-labelledby="newsletter-heading">
       <div>
         <p className="eyebrow">
           <span aria-hidden="true">✉</span> From the author’s desk
         </p>
-        <h2 id="newsletter-heading">Stay in the story.</h2>
+        <h2 id="newsletter-heading">Be part of the story.</h2>
         <p>
-          Book news and updates from David Hamilton, beginning with{" "}
-          <em>Bois</em>.
+          Follow the journey of <em>Bois</em>, a young adult fantasy rooted in
+          Trinidad and Tobago folklore. Sign up for book news and writing updates
+          from David Hamilton.
         </p>
       </div>
       <div className="newsletter-action">
-        {direct ? (
-          substackUrl ? (
-            <a className="button button--primary" href={substackUrl.href} data-analytics="substack">
-              Subscribe on Substack <Arrow diagonal />
-            </a>
-          ) : (
-            <p className="availability">
-              Subscriptions will open here once the newsletter is ready.
-            </p>
-          )
-        ) : (
-          <Button href="/newsletter">
-            Get Book Updates <Arrow />
-          </Button>
+        <Button href="/newsletter">
+          Get Book Updates <Arrow />
+        </Button>
+        <p className="small-note">Book updates via Kit. Unsubscribe at any time.</p>
+        {substackUrl && (
+          <p className="small-note newsletter-secondary">
+            <a href={substackUrl.href} data-analytics="substack">Read David on Substack <Arrow diagonal /></a>
+          </p>
         )}
-        <p className="small-note">Subscriptions will be managed by Substack.</p>
       </div>
     </section>
   );

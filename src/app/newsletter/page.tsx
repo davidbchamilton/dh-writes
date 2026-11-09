@@ -1,4 +1,5 @@
-import { PlaceholderPage } from "@/components/placeholder-page";
+import { NewsletterCTA } from "@/components/newsletter-cta";
+import { Breadcrumbs, PageHero } from "@/components/ui";
 import { pageMetadata } from "@/lib/site";
 export const metadata = pageMetadata(
   "Newsletter",
@@ -8,10 +9,12 @@ export const metadata = pageMetadata(
 );
 export default function NewsletterPage() {
   return (
-    <PlaceholderPage
-      title="Get Book Updates"
-      description="Follow book news and updates from David Hamilton, beginning with Bois."
-      newsletter
-    />
+    <div className="site-container placeholder-page">
+      <Breadcrumbs items={[{ label: "Home", href: "/" }, { label: "Book Updates" }]} />
+      <PageHero eyebrow="From the author’s desk" title="Get Book Updates">
+        <p>Stay close to the stories, beginning with <em>Bois</em>.</p>
+      </PageHero>
+      <NewsletterCTA direct />
+    </div>
   );
 }

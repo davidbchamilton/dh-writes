@@ -16,7 +16,15 @@ test("subscription clicks support Substack and explicitly marked custom domains"
   assert.equal(analyticsLinkEvent("https://writer.substack.com/subscribe", page)?.name, "substack_subscribe_click");
   assert.equal(analyticsLinkEvent("https://newsletter.example.com", page, "substack")?.name, "substack_subscribe_click");
   assert.equal(analyticsLinkEvent("https://substack.com.example.com", page), undefined);
-  assert.equal(analyticsLinkEvent("/newsletter", page), undefined);
+  assert.equal(analyticsLinkEvent("/newsletter", page)?.name, "newsletter_signup_click");
+});
+
+test("Kit signup interest is distinct from subscriptions and excludes personal data", () => {
+  assert.deepEqual(analyticsLinkEvent("https://david-hamilton-2.kit.com/1f64be7eb2?email=private@example.com", page, "kit"), {
+    name: "newsletter_signup_click",
+    params: { destination: "kit", link_type: "hosted_form" },
+  });
+  assert.equal(analyticsLinkEvent("/newsletter", page)?.params.link_type, "newsletter_page");
 });
 
 test("contact events exclude email, phone, query strings, and fragments", () => {
