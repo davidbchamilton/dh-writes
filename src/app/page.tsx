@@ -119,6 +119,8 @@ export default async function HomePage() {
                 description={post.description}
                 date={post.publishedAt}
                 href={`/journal/${post.slug}`}
+                coverImage={post.coverImage}
+                coverAlt={post.coverAlt}
               />
             ))}
           </div>

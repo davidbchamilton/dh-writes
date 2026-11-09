@@ -115,3 +115,29 @@ pages, sitemap membership, and continued exclusion of drafts/preparation pages.
 Changes are local; deployment and Google recrawling remain outstanding. After
 deployment, use Search Console URL Inspection to test the live newsletter and
 privacy URLs and request indexing. The journal exclusion remains intentional.
+
+## Journal publishing implementation - November 9, 2026
+
+Replaced the journal placeholders with a published-post index and full MDX
+article layout. My Writer’s Journey now renders its original body, six Markdown
+links, author/date/category, the uncropped 1200 x 670 WebP cover, and the existing
+Kit signup CTA. Covers use their real intrinsic dimensions; preview cards crop
+to 16:9. The article text and MDX file were not changed.
+
+Published posts appear on the homepage and journal index. The journal index and
+published article URLs are indexable when the public origin is configured and
+are included automatically in the sitemap. The index remains noindex when
+empty, unconfigured previews remain noindex, and draft/unknown article URLs
+remain 404. Article sharing metadata uses the post title, description, and cover.
+
+All 20 tests passed with and without the configured production origin. The
+standalone type check and production webpack builds passed. Production smoke
+checks passed for the new article route, homepage/index links, cover response,
+canonical and robots metadata, sitemap membership, and draft exclusion. Browser
+checks at 390px and desktop widths confirmed an uncropped loaded image,
+readable body text and links, and no horizontal overflow. Mobile capture:
+`artifacts/journal-article-mobile.webp`.
+
+Sharp is now an explicit production dependency for reading cover dimensions;
+the lockfile was regenerated offline. Changes are local and require committing,
+pushing, and deploying a fresh build before the live article displays this layout.

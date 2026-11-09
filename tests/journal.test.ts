@@ -7,19 +7,51 @@ import {
   parsePost,
   publishedPosts,
   readPosts,
+  getJournalCover,
 } from "../src/lib/journal";
 import { compileLocalMdx } from "../src/lib/mdx";
+import JournalArticle, { generateMetadata, generateStaticParams } from "../src/app/journal/[slug]/page";
+import { siteUrl } from "../src/lib/site";
 
 test("the repository sample stays draft-only and compiles as MDX", async () => {
-  const drafts = await readPosts();
-  assert.equal(drafts.length, 1);
-  assert.equal(drafts[0].draft, true);
-  assert.deepEqual(await getPublishedPosts(), []);
-  const Content = await compileLocalMdx(drafts[0].source);
+  const sample = (await readPosts()).find((post) => post.slug === "internal-example");
+  assert.ok(sample);
+  assert.equal(sample.draft, true);
+  assert.ok(!(await getPublishedPosts()).some((post) => post.slug === sample.slug));
+  const Content = await compileLocalMdx(sample.source);
   assert.match(
     renderToStaticMarkup(createElement(Content)),
     /<strong>internal draft<\/strong>/,
   );
+});
+
+test("published articles render their body, clickable links, cover, and search metadata", async () => {
+  const posts = await getPublishedPosts();
+  assert.deepEqual(await generateStaticParams(), posts.map(({ slug }) => ({ slug })));
+  for (const post of posts) {
+    const props = { params: Promise.resolve({ slug: post.slug }) };
+    const html = renderToStaticMarkup(await JournalArticle(props));
+    assert.match(html, /id="article-title"/);
+    assert.match(html, /class="prose journal-prose"/);
+    assert.doesNotMatch(html, /article layout will be implemented/);
+    for (const [, href] of post.source.matchAll(/\]\((https?:\/\/[^\s)]+)\)/g)) {
+      assert.ok(html.includes(`href="${href.replaceAll("&", "&amp;")}"`));
+    }
+    const cover = await getJournalCover(post);
+    if (cover) {
+      assert.ok(html.includes(`src="${cover.src}"`));
+      assert.ok(html.includes(`width="${cover.width}" height="${cover.height}"`));
+    }
+    const metadata = await generateMetadata(props);
+    assert.deepEqual(metadata.robots, { index: Boolean(siteUrl), follow: true });
+    assert.equal(metadata.openGraph.type, "article");
+  }
+});
+
+test("draft and missing articles remain unavailable", async () => {
+  for (const slug of ["internal-example", "not-published"]) {
+    await assert.rejects(JournalArticle({ params: Promise.resolve({ slug }) }), /NEXT_HTTP_ERROR_FALLBACK;404/);
+  }
 });
 
 const fixture = (slug: string, draft: boolean, date: string) =>

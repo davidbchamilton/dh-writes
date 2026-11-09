@@ -4,7 +4,8 @@ import { pageMetadata, parsePublicUrl, siteUrl } from "../src/lib/site";
 import sitemap from "../src/app/sitemap";
 import { metadata as newsletterMetadata } from "../src/app/newsletter/page";
 import { metadata as privacyMetadata } from "../src/app/privacy/page";
-import { metadata as journalMetadata } from "../src/app/journal/page";
+import { generateMetadata as getJournalMetadata } from "../src/app/journal/page";
+import { getPublishedPosts } from "../src/lib/journal";
 
 test("missing configuration does not invent an origin or subscription URL", () => {
   assert.equal(parsePublicUrl("", "TEST_URL"), undefined);
@@ -19,17 +20,20 @@ test("missing configuration does not invent an origin or subscription URL", () =
   );
 });
 
-test("completed newsletter and privacy pages are indexable only with a configured origin", () => {
+test("completed pages are indexable only with a configured origin", async () => {
   for (const metadata of [newsletterMetadata, privacyMetadata]) {
     assert.deepEqual(metadata.robots, { index: Boolean(siteUrl), follow: true });
   }
-  assert.deepEqual(journalMetadata.robots, { index: false, follow: true });
+  const posts = await getPublishedPosts();
+  assert.deepEqual((await getJournalMetadata()).robots, { index: Boolean(siteUrl) && posts.length > 0, follow: true });
 });
 
-test("sitemap includes completed pages and excludes the empty journal", () => {
+test("sitemap includes published articles and excludes drafts", async () => {
+  const posts = await getPublishedPosts();
+  const paths = ["/", "/newsletter", "/privacy", ...(posts.length ? ["/journal"] : []), ...posts.map((post) => `/journal/${post.slug}`)];
   assert.deepEqual(
-    sitemap().map((entry) => entry.url),
-    siteUrl ? ["/", "/newsletter", "/privacy"].map((path) => new URL(path, siteUrl).href) : [],
+    (await sitemap()).map((entry) => entry.url),
+    siteUrl ? paths.map((path) => new URL(path, siteUrl).href) : [],
   );
 });
 

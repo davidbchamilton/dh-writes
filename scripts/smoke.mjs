@@ -1,4 +1,9 @@
 import assert from "node:assert/strict";
+import { readdir, readFile } from "node:fs/promises";
+import matter from "gray-matter";
+
+const posts = (await Promise.all((await readdir("content/journal")).filter((file) => file.endsWith(".mdx")).map(async (file) => matter(await readFile(`content/journal/${file}`, "utf8")).data))).filter((post) => post.draft === false);
+const indexablePaths = ["/", "/newsletter", "/privacy", ...(posts.length ? ["/journal"] : []), ...posts.map((post) => `/journal/${post.slug}`)];
 
 const origin = process.argv[2] ?? "http://127.0.0.1:3100";
 const routes = [
@@ -10,6 +15,7 @@ const routes = [
   "/newsletter",
   "/contact",
   "/privacy",
+  ...posts.map((post) => `/journal/${post.slug}`),
 ];
 let publicOrigin;
 
@@ -27,7 +33,23 @@ for (const route of routes) {
     `${route} needs a branded title`,
   );
   assert.match(html, /id="main-content"/, `${route} needs a main landmark`);
-  assert.match(html, /property="og:image" content="[^"]*\/opengraph-image\.webp"/);
+  assert.match(html, /property="og:image" content="[^"]*\.webp"/);
+  if (route.startsWith("/journal/")) {
+    assert.match(html, /class="prose journal-prose"/);
+    assert.match(html, /property="og:type" content="article"/);
+    assert.doesNotMatch(html, /article layout will be implemented/);
+    const cover = html.match(/<figure class="article-cover"><img[^>]*src="([^"]+)"/);
+    if (cover) {
+      const image = await fetch(new URL(cover[1], origin));
+      assert.equal(image.status, 200);
+      assert.match(image.headers.get("content-type"), /image\/webp/);
+    }
+  }
+  if (route === "/journal" || route === "/") {
+    for (const post of posts.slice(0, route === "/" ? 3 : undefined)) {
+      assert.ok(html.includes(`href="/journal/${post.slug}"`));
+    }
+  }
   assert.doesNotMatch(html, /href="#"/, `${route} must not contain fake links`);
   if (route === "/newsletter") {
     assert.match(html, /data-kit-embed="1f64be7eb2"/);
@@ -59,7 +81,7 @@ for (const route of routes) {
       assert.match(image.headers.get("cache-control"), /immutable/);
     }
   }
-  if (["/", "/newsletter", "/privacy"].includes(route) && publicOrigin) {
+  if (indexablePaths.includes(route) && publicOrigin) {
     assert.doesNotMatch(response.headers.get("x-robots-tag") ?? "", /noindex/i);
     assert.match(html, /name="robots" content="index, follow"/);
     assert.doesNotMatch(html, /content="[^"]*noindex/);
@@ -94,10 +116,10 @@ assert.equal(sitemap.status, 200);
 const sitemapXml = await sitemap.text();
 assert.doesNotMatch(
   sitemapXml,
-  /internal-example|\/about|\/books|\/journal|\/contact/,
+  /internal-example|\/about|\/books|\/contact/,
 );
 if (publicOrigin) {
-  for (const path of ["/", "/newsletter", "/privacy"]) {
+  for (const path of indexablePaths) {
     assert.ok(sitemapXml.includes(`<loc>${new URL(path, publicOrigin).href}</loc>`));
   }
 } else {

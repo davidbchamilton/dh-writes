@@ -60,7 +60,8 @@ Set these before building; rebuild after changing them. Never put secrets in
 `NEXT_PUBLIC_*` variables. All Phase 1 placeholder pages remain `noindex` and
 outside the sitemap even after an origin is configured. Completed pages
 (`/`, `/newsletter`, and `/privacy`) allow indexing and appear in the configured
-sitemap. The empty journal remains excluded until articles are published.
+sitemap. The journal index and published articles join the sitemap automatically;
+an empty journal index stays excluded.
 Without `NEXT_PUBLIC_SITE_URL`, every page remains `noindex` and the sitemap
 stays empty. Rebuild after changing the production origin or indexing settings.
 
@@ -161,10 +162,11 @@ It does not require a runtime image optimizer or client image component.
 - `/`: fully implemented homepage.
 - `/newsletter`: live embedded Kit signup, with a direct hosted-form fallback.
 - `/privacy`: privacy information, eligible for indexing with a configured origin.
-- `/books`, `/books/bois`, `/about`, `/journal`, `/contact`: retain their existing
+- `/books`, `/books/bois`, `/about`, `/contact`: retain their existing
   preparation-stage indexing restrictions.
-- `/journal/[slug]`: route foundation only. Drafts and unknown slugs return 404;
-  there are no public articles. The full article layout is reserved for Phase 2.
+- `/journal`: published article listing with cover previews; indexable when it has articles.
+- `/journal/[slug]`: full MDX article, author/date, uncropped cover, Markdown links,
+  subscription CTA, and article sharing metadata. Drafts and unknown slugs return 404.
 - `/robots.txt`, `/sitemap.xml`: generated SEO endpoints; `/opengraph-image.webp`:
   pre-generated social sharing image.
 
@@ -191,12 +193,19 @@ publishedAt: "2026-11-02" # quote dates; use the actual publication date
 category: "Writing"
 draft: true
 # coverImage: "/images/approved-image.webp" # optional
+# coverAlt: "Describe the image for readers who cannot see it" # optional
 # canonical: "https://..."                # optional confirmed canonical URL
 ```
 
 Required fields and dates are validated; filenames must match kebab-case slugs.
-Keep content draft-only in Phase 1. In Phase 2, finish the index and article
-layout, per-article metadata and sitemap inclusion before publishing an article.
+To publish, add a valid MDX file and any local WebP images, set `draft: false`,
+run the checks and build, then commit/push and deploy the rebuilt site. Published
+articles automatically appear in the journal, homepage previews, and configured
+sitemap. Keep `draft: true` while preparing an article; it is excluded from
+public routes, listings, and the sitemap. Changing an article requires a rebuild.
+Cover paths must begin with `/images/` and end with `.webp`. The build validates
+published cover files and reads their real dimensions to prevent layout shifts.
+Cover images display uncropped on articles; card previews crop to 16:9.
 The full original article belongs on this site; adapted newsletter versions can
 link back from Substack.
 

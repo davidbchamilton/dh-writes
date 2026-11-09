@@ -1,6 +1,7 @@
 import { readdir, readFile } from "node:fs/promises";
 import path from "node:path";
 import matter from "gray-matter";
+import sharp from "sharp";
 
 export type JournalPost = {
   title: string;
@@ -9,6 +10,7 @@ export type JournalPost = {
   publishedAt: string;
   category: string;
   coverImage?: string;
+  coverAlt?: string;
   canonical?: string;
   draft: boolean;
   source: string;
@@ -46,10 +48,12 @@ export function parsePost(raw: string, filename: string): JournalPost {
   if (
     data.coverImage !== undefined &&
     (typeof data.coverImage !== "string" ||
-      !data.coverImage.startsWith("/images/") ||
+      !/^\/images\/[a-zA-Z0-9/_-]+\.webp$/.test(data.coverImage) ||
       data.coverImage.includes(".."))
   )
-    throw new Error(`${filename}: coverImage must be a local /images/ path.`);
+    throw new Error(`${filename}: coverImage must be a local /images/ WebP path.`);
+  if (data.coverAlt !== undefined && typeof data.coverAlt !== "string")
+    throw new Error(`${filename}: coverAlt must be a string.`);
   if (
     data.canonical !== undefined &&
     (typeof data.canonical !== "string" ||
@@ -65,6 +69,7 @@ export function parsePost(raw: string, filename: string): JournalPost {
     category: data.category,
     draft: data.draft,
     coverImage: data.coverImage,
+    coverAlt: data.coverAlt,
     canonical: data.canonical,
     source: content,
   };
@@ -95,4 +100,17 @@ export function publishedPosts(posts: JournalPost[]): JournalPost[] {
 
 export async function getPublishedPosts(): Promise<JournalPost[]> {
   return publishedPosts(await readPosts());
+}
+
+export async function getJournalCover(post: JournalPost) {
+  if (!post.coverImage) return undefined;
+  const image = await sharp(path.join(process.cwd(), "public", post.coverImage.slice(1))).metadata();
+  if (image.format !== "webp" || !image.width || !image.height)
+    throw new Error(`${post.slug}: cover image must be a valid WebP file.`);
+  return {
+    src: post.coverImage,
+    width: image.width,
+    height: image.height,
+    alt: post.coverAlt ?? "",
+  };
 }
